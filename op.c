@@ -3,34 +3,29 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-
-char *getline()
-{
-	
-}
-
 char *get_next_line(int fd)
 {
 	char		*linha;
+	int			buffer = 50;
 	char		*conteudo;
 	int			i = 0;
 
-	linha = malloc(sizeof(char)*BUFFER_SIZE);
+	linha = malloc(sizeof(char)*buffer);
 	conteudo = malloc(sizeof(char)*1);
-	if ((read(fd, linha, 0) < 0) || (BUFFER_SIZE <= 0))
+	if ((read(fd, linha, 0) < 0) || (buffer <= 0))
 	{
 		write(1,"Erro",4);
 		return (NULL);
 	}
-	i = read(fd, linha, BUFFER_SIZE);
-	if (BUFFER_SIZE >= 0)
-		linha[BUFFER_SIZE] = '\0';
-	if (BUFFER_SIZE <= 0)
+	i = read(fd, linha, buffer);
+	if (buffer >= 0)
+		linha[buffer] = '\0';
+	if (buffer <= 0)
 		linha[0] = '\0';
 	i = 0;
 	while (linha[i] != '\n' && linha[i] != '\0')
 	{
-		printf("%c", linha[i]);
+		printf("%c ", linha[i]);
 		i++;
 		// se  linha[i] != '\0'
 		// 		conteudo <<- linha (usar uma função para concatenar)		
