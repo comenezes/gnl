@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
-#define BUFFER_SIZE 5
+#define BUFFER_SIZE 15 
 
 size_t	ft_strlen(const char *ch)
 {
@@ -102,21 +102,41 @@ char	*strip_line(char *content)
     return(temp);
 }
 
-/*
-char	*get_rest(content)
+char	*get_rest(char *content)
 {
-//	recebe o conteudo do arquivo remove a linha que foi lida e
-//	guarda o restante para proxima leitura
-}
+    int     i;
+	int		j;
+    char    *temp;
 
-*/
+  printf("STRLEN content: %ul\n\n", ft_strlen(content)); 
+//	printf(content);
+	i = 0;
+    while ((content[i] != '\n') && (content[i] != '\0'))
+        i++;
+    temp = malloc(sizeof(char) * (ft_strlen(content) - i + 1));
+	if (!temp)
+		return(NULL);
+	j = -1;
+	while (i <= ft_strlen(content))
+	{
+		temp[++j] = content[i++];
+		printf("%d",i);
+		printf(" - %d\n",j); 
+	}
+//    temp[j+2] = '\0';
+    temp[j+1] = '\n';
+//	free(content);
+//	content = temp;  
+//    printf("\n\n%s\n\n",temp);
+    return(temp);
+}
 
 char *get_next_line(int fd)
 {
     char		    *line;
     static char		*content;
-//     char	*reserve;
-//   int			i;
+//  char	*reserve;
+//  int			i;
 
     if ((read(fd, 0, 0) < 0) || (BUFFER_SIZE <= 0))
         return (NULL);
@@ -128,26 +148,31 @@ char *get_next_line(int fd)
     }
     content = read_content(fd, content);
     line = strip_line(content);
-//    reserve = get_rest(content);
-
+	printf("*** %s", content);
+//    content = get_rest(content);
 //    free(content);
+
+	//    printf("%s",line);
     return (line);
 }
 
 int main()
 {
     char	*nextline;
-    int		fd = open("/Users/claudio/CLionProjects/gnl/texto.txt", O_RDONLY);
+    int		fd = open("texto.txt", O_RDONLY);
 
     if (fd < 0)
     {
         perror("c1");
         exit(1);
     }
-
 	nextline = get_next_line(fd);
     printf("%s", nextline);
-
+/*	nextline = get_next_line(fd);
+    printf("%s", nextline);
+	nextline = get_next_line(fd);
+    printf("%s", nextline);
+*/
 
     if (close(fd) < 0)
     {
