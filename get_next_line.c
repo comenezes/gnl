@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
-#define BUFFER_SIZE 15 
+#define BUFFER_SIZE 35
 
 size_t	ft_strlen(const char *ch)
 {
@@ -59,7 +59,7 @@ char	*read_content(int fd, char *content)
     char *temp;
     char *cache;
 
-    temp = malloc(sizeof(char)*1);
+    temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
     if (!temp)
         return(NULL);
     nbytes = 1;
@@ -91,8 +91,8 @@ char	*strip_line(char *content)
     while (content[i] != '\n' && content[i] != '\0')
         i++;
     temp = malloc(sizeof(char) * i + 2);
-    temp[i+2] = '\0';
-    temp[i+1] = '\n';
+    temp[i+1] = '\0';
+//    temp[i+1] = '\n';
     while (i >= 0)
         {
             temp[i] = content[i];
@@ -108,8 +108,6 @@ char	*get_rest(char *content)
 	int		j;
     char    *temp;
 
-  printf("STRLEN content: %ul\n\n", ft_strlen(content)); 
-//	printf(content);
 	i = 0;
     while ((content[i] != '\n') && (content[i] != '\0'))
         i++;
@@ -119,13 +117,10 @@ char	*get_rest(char *content)
 	j = -1;
 	while (i <= ft_strlen(content))
 	{
-		temp[++j] = content[i++];
-		printf("%d",i);
-		printf(" - %d\n",j); 
+		temp[++j] = content[++i];
 	}
-//    temp[j+2] = '\0';
-    temp[j+1] = '\n';
-//	free(content);
+    temp[j+1] = '\0';
+	free(content);
 //	content = temp;  
 //    printf("\n\n%s\n\n",temp);
     return(temp);
@@ -135,8 +130,6 @@ char *get_next_line(int fd)
 {
     char		    *line;
     static char		*content;
-//  char	*reserve;
-//  int			i;
 
     if ((read(fd, 0, 0) < 0) || (BUFFER_SIZE <= 0))
         return (NULL);
@@ -148,9 +141,7 @@ char *get_next_line(int fd)
     }
     content = read_content(fd, content);
     line = strip_line(content);
-	printf("*** %s", content);
-//    content = get_rest(content);
-//    free(content);
+    content = get_rest(content);
 
 	//    printf("%s",line);
     return (line);
@@ -166,20 +157,22 @@ int main()
         perror("c1");
         exit(1);
     }
-	nextline = get_next_line(fd);
-    printf("%s", nextline);
-/*	nextline = get_next_line(fd);
-    printf("%s", nextline);
-	nextline = get_next_line(fd);
-    printf("%s", nextline);
-*/
+
+	nextline = 'x';
+	while (nextline)
+	{
+		nextline = get_next_line(fd);
+    	printf("%s", nextline);
+		if (nextline)
+			free(nextline);
+	}
 
     if (close(fd) < 0)
     {
         perror("c1"); //atencao
         exit(1);
     }
-    printf("\n\nclose the fd.\n");
+    printf("*\nclose the fd.\n");
     return (0);
 }
 
