@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
-#define BUFFER_SIZE 35
+#define BUFFER_SIZE 1234678945
 
 size_t	ft_strlen(const char *ch)
 {
@@ -72,8 +72,8 @@ char	*read_content(int fd, char *content)
             free(content);
             return (NULL);
         }
-        temp[nbytes] = '\0';
 
+        temp[nbytes] = '\0';
         cache = ft_strjoin(content, temp);
         free (content);
         content = cache;
@@ -111,13 +111,15 @@ char	*get_rest(char *content)
 	i = 0;
     while ((content[i] != '\n') && (content[i] != '\0'))
         i++;
+	if (content[i] == '\n')
+	   i++;	
     temp = malloc(sizeof(char) * (ft_strlen(content) - i + 1));
 	if (!temp)
 		return(NULL);
 	j = -1;
 	while (i <= ft_strlen(content))
 	{
-		temp[++j] = content[++i];
+		temp[++j] = content[i++];
 	}
     temp[j+1] = '\0';
 	free(content);
@@ -158,13 +160,12 @@ int main()
         exit(1);
     }
 
-	nextline = 'x';
-	while (nextline)
+	int i = 35;
+	while (i)
 	{
 		nextline = get_next_line(fd);
     	printf("%s", nextline);
-		if (nextline)
-			free(nextline);
+		i--;
 	}
 
     if (close(fd) < 0)
@@ -172,25 +173,6 @@ int main()
         perror("c1"); //atencao
         exit(1);
     }
-    printf("*\nclose the fd.\n");
+    printf("\n**close the fd.**\n");
     return (0);
 }
-
-/*char    *get_next_line(int fd)
-{
-    char			*line;
-    static char    *save;
-    char        *buffer;
-    if (read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
-        return (NULL);
-    buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-    if (!buffer)
-        return (NULL);
-    if (!save)
-        save = ft_strdup("\0");
-    save = get_buffer(fd, save, buffer);
-    line = ft_read_line(save);
-    save = ft_strip_sausage(save);
-    free(buffer);
-    return (line);
-}*/
