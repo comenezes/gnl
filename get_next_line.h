@@ -6,11 +6,14 @@
 /*   By: cmenezes <cmenezes@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 22:53:02 by cmenezes          #+#    #+#             */
-/*   Updated: 2022/11/11 00:39:26 by cmenezes         ###   ########.fr       */
+/*   Updated: 2022/11/12 16:48:21 by cmenezes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 # include <stdlib.h>
 # include <unistd.h>
 

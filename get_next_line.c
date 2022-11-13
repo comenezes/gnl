@@ -6,7 +6,7 @@
 /*   By: cmenezes <cmenezes@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:53:12 by cmenezes          #+#    #+#             */
-/*   Updated: 2022/11/10 23:53:07 by cmenezes         ###   ########.fr       */
+/*   Updated: 2022/11/12 21:23:36 by cmenezes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -17,7 +17,7 @@ char	*read_content(int fd, char *content)
 	char	*temp;
 	char	*cache;
 
-	temp = malloc (sizeof(char) * (BUFFER_SIZE + 1));
+	temp = malloc (sizeof(char) * (BUFFER_SIZE + 2));
 	if (!temp)
 		return (NULL);
 	nbytes = 1;
@@ -48,6 +48,10 @@ char	*strip_line(char *content)
 	while (content [i] != '\n' && content [i] != '\0')
 		i++;
 	temp = malloc (sizeof (char) * i + 2);
+	if (!temp)
+	{
+		return (NULL);
+	}
 	temp [i + 1] = '\0';
 	while (i >= 0)
 	{
@@ -61,6 +65,7 @@ char	*get_rest(char *content)
 {
 	size_t	i;
 	int		j;
+	size_t	size;
 	char	*temp;
 
 	i = 0;
@@ -68,11 +73,12 @@ char	*get_rest(char *content)
 		i++;
 	if (content [i] == '\n')
 		i++;
-	temp = malloc (sizeof (char) * (ft_strlen (content) - i + 1));
+	size = ft_strlen (content);
+	temp = malloc (sizeof (char) * (size - i + 1));
 	if (!temp)
 		return (NULL);
 	j = -1;
-	while (i <= ft_strlen (content))
+	while (i < size)
 	{
 		temp [++j] = content [i++];
 	}

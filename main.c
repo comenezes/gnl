@@ -6,7 +6,7 @@
 /*   By: cmenezes <cmenezes@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 06:53:02 by cmenezes          #+#    #+#             */
-/*   Updated: 2022/11/10 21:44:34 by cmenezes         ###   ########.fr       */
+/*   Updated: 2022/11/12 20:56:02 by cmenezes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 int main()
 {
     char	*nextline;
-    int		fd = open("texto.txt", O_RDONLY);
+    int		fd = open("loreip.txt", O_RDONLY);
 
     if (fd < 0)
     {
@@ -41,7 +41,7 @@ int main()
         perror("c1"); //atencao
         exit(1);
     }
-    printf("\n**close the fd.**\n");
+    printf("**close the fd.**");
     return (0);
 }
 
