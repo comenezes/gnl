@@ -10,14 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
-
 char	*read_content(int fd, char *content)
 {
 	int		nbytes;
 	char	*temp;
-	char	*cache;
 
-	temp = malloc (sizeof(char) * (BUFFER_SIZE + 2));
+	temp = malloc (sizeof(char) * (BUFFER_SIZE + 1));//Alterei aqui ** Antes o BUFFER_SIZE era 2**
 	if (!temp)
 		return (NULL);
 	nbytes = 1;
@@ -27,15 +25,12 @@ char	*read_content(int fd, char *content)
 		if (nbytes == -1)
 		{
 			free(temp);
-			free(content);
 			return (NULL);
 		}
 		temp[nbytes] = '\0';
-		cache = ft_strjoin (content, temp);
-		free (content);
-		content = cache;
+		content = ft_strjoin (content, temp); //alterei aqui **Cocatenacao na variavel statica**
 	}
-	free (temp);
+	free(temp);
 	return (content);
 }
 
@@ -45,6 +40,10 @@ char	*strip_line(char *content)
 	char	*temp;
 
 	i = 0;
+	if(content[i] == '\0')//alterei aqui  ** Tratamento para verificar se a variavel estatica e nulo ** 
+	{
+		return NULL;
+	}
 	while (content [i] != '\n' && content [i] != '\0')
 		i++;
 	temp = malloc (sizeof (char) * i + 2);
@@ -69,20 +68,25 @@ char	*get_rest(char *content)
 	char	*temp;
 
 	i = 0;
+	if(content[i] == '\0')//alterei aqui ** Tratamento para verificar se a variavel estatica e nulo  e da um free nela ** 
+	{
+		free(content);
+		return NULL;
+	}
 	while ((content[i] != '\n') && (content[i] != '\0'))
 		i++;
 	if (content [i] == '\n')
 		i++;
 	size = ft_strlen (content);
-	temp = malloc (sizeof (char) * (size - i + 1));
+	temp = malloc (sizeof (char) * (size - i)+1);//alterei aqui ** coloquei o size - i entre parenteses 
 	if (!temp)
 		return (NULL);
-	j = -1;
-	while (i < size)
+	j = 0;
+	while (content[i])
 	{
-		temp [++j] = content [i++];
+		temp [j++] = content [i++];
 	}
-	temp [j + 1] = '\0';
+	temp [j] = '\0';//alterei aqui **Antes estava com j + 1 e tirei o +1**
 	free (content);
 	return (temp);
 }
@@ -96,9 +100,14 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (!content)
 	{
-		content = malloc(sizeof(char) * BUFFER_SIZE + 1);
+		if(content == NULL) //alterei aqui **A variavel estatica e inicializada como null e importante  fazer um malloc de 1 byte e colocar caracter para fazer a cocatenacao
+	{
+		content = malloc(1);
+		content[0] = '\0';
+	}
 		if (!content)
 			return (NULL);
+		
 	}
 	content = read_content(fd, content);
 	line = strip_line(content);
