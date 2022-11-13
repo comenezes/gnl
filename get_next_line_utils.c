@@ -22,7 +22,7 @@ size_t	ft_strlen(const char *ch)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -34,6 +34,7 @@ char	*ft_strjoin(char const *s1, char *s2)
 	j = 0;
 	size1 = ft_strlen (s1);
 	size2 = ft_strlen (s2);
+	
 	chjoin = malloc (size1 + size2 + 1);
 	if (chjoin == NULL)
 		return (NULL);
@@ -48,6 +49,7 @@ char	*ft_strjoin(char const *s1, char *s2)
 		j++;
 	}
 	chjoin [i + j] = '\0';
+	free(s1);//Alterei aqui **Free na variavel estatica**
 	return (chjoin);
 }
 
